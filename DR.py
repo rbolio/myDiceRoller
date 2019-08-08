@@ -1,5 +1,5 @@
 """
-Small project to roll sorcery attacks in D&D
+Small project to run attacks
 """
 from random import randrange
 
@@ -25,9 +25,10 @@ class the_math:
 
 
 class spells:
-    def __init__(self, name, dice_list, spell_level, extra_damage):
+    def __init__(self, name, dice_list, extra_level, spell_level, extra_damage):
         self.name = name
-        self.dice_list = dice_list
+        self.total_dice = [dice_list]
+        self.extra_level = extra_level
         self.spell_level = spell_level
         self.extra_damage = extra_damage
 
@@ -38,16 +39,20 @@ class myChar:
         self.level = level
         self.available_spells = []
 
-    def add_spell(self, spell_name, hit_dice_list, spell_level, extra_dmg):
-        new_spell = spells(spell_name, hit_dice_list, spell_level, extra_dmg)
+    def add_spell(self, spell_name, hit_dice_list, extra_level, spell_level, extra_dmg):
+        new_spell = spells(
+            spell_name, hit_dice_list, extra_level, spell_level, extra_dmg
+        )
         self.available_spells.append(new_spell)
         print("{} was added to the spell list".format(new_spell.name))
 
-    def attack(self, spell_name):
+    def attack(self, spell_name, cast_level):
         attack_spell = self.get_spell_data(spell_name)
         damage = the_math()
         if attack_spell:
-            print("Hit with {}".format(damage.readAttack(attack_spell.dice_list)))
+            for extra_dice in range(0, (cast_level - attack_spell.spell_level)):
+                attack_spell.total_dice.append(attack_spell.extra_level)
+            print("Hit with {}".format(damage.readAttack(attack_spell.total_dice)))
 
     def get_spell_data(self, spell_name):
         for spell in self.available_spells:
@@ -58,5 +63,5 @@ class myChar:
 
 if __name__ == "__main__":
     char = myChar("Stelion the Covert", 8)
-    char.add_spell("Fireball", ["8d6"], 3, 0)
-    char.attack("Fireball")
+    char.add_spell("Fireball", "8d6", "1d6", 3, 0)
+    char.attack("Fireball", 4)
