@@ -27,10 +27,16 @@ class the_math:
 class spells:
     def __init__(self, name, dice_list, extra_level, spell_level, extra_damage):
         self.name = name
-        self.total_dice = [dice_list]
+        self.dice_list = dice_list
         self.extra_level = extra_level
         self.spell_level = spell_level
         self.extra_damage = extra_damage
+        self.total_dice = []
+        self.generate_total_dice()
+
+    def generate_total_dice(self, ):
+        for dice in self.dice_list:
+            self.total_dice.append(dice)
 
 
 class myChar:
@@ -63,5 +69,5 @@ class myChar:
 
 if __name__ == "__main__":
     char = myChar("Stelion the Covert", 8)
-    char.add_spell("Fireball", "8d6", "1d6", 3, 0)
+    char.add_spell("Fireball", ["8d6", ], "1d6", 3, 0)
     char.attack("Fireball", 4)
