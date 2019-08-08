@@ -1,5 +1,5 @@
 """
-Small project to run attacks
+Small project to roll sorcery attacks in D&D
 """
 from random import randrange
 
